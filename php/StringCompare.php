@@ -110,7 +110,6 @@ class CharCountMethod implements CompareAlgo {
     private $statsArray = array();
 
     private function generateResult($array) {
-        print_r($array);
         $totalCount = count($array);
         $count = 0;
         foreach ($array as $value):
