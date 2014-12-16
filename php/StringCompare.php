@@ -63,9 +63,38 @@ class StringCompareFactory {
 }
 
 class WordCountMethod implements CompareAlgo {
-
+	private $statsArray = array();
+	private $percentage;
+	private function generateResult($array){
+		$totalCount = count($array);
+		$count      = 0;
+		foreach($array as $value):
+			if($value == 0){
+				continue;
+			}else{
+				$count++;
+			}
+		endforeach;
+		$r_percentage = ($count/$totalCount)*100;
+		if($this->percentage <= $r_percentage){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
     public function compareString($master, $slave, $percentage) {
-    	
+    	$this->percentage = $percentage;
+    	$words = explode(' ',$master);
+    	if(!empty($words)){
+	    	foreach($words as $word):
+	    		if(strlen($word)<=2)
+	    			continue;
+	    		$statsArray[$word] = substr_count($slave, $word);
+	    	endforeach;
+	    	return $this->generateResult($statsArray);
+	    }else{
+	    	return 0;
+	    }
     }
 
 }
@@ -81,6 +110,7 @@ class CharCountMethod implements CompareAlgo {
 class StringCompare {
 
 	private $result;
+	private $percentage;
 
 	function __construct($master, $slave, $percentage) {
 		$config           = $GLOBALS['config'];
@@ -107,5 +137,3 @@ class StringCompare {
 function StringCompare($master, $slave, $percentage){
 	return new StringCompare($master, $slave, $percentage);
 }
-
-
