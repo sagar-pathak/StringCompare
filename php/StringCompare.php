@@ -65,7 +65,7 @@ class StringCompareFactory {
 class WordCountMethod implements CompareAlgo {
 
     public function compareString($master, $slave, $percentage) {
-    	return 1;
+    	
     }
 
 }
@@ -85,6 +85,8 @@ class StringCompare {
 	function __construct($master, $slave, $percentage) {
 		$config           = $GLOBALS['config'];
 		$comparision_type = $config['COMPARE_TYP'];
+		$master           = $this->formatInput($master);
+		$slave            = $this->formatInput($slave);
 
 		$comparator       = StringCompareFactory::compareWith($comparision_type);
 		$this->result     = $comparator->compareString($master, $slave, $percentage);
@@ -95,8 +97,15 @@ class StringCompare {
 		return (string) $this->result;
 	}
 
+	protected function formatInput($string){
+		$string = strtolower($string);
+		return $string;
+	}
+
 }
 
 function StringCompare($master, $slave, $percentage){
 	return new StringCompare($master, $slave, $percentage);
 }
+
+
