@@ -36,9 +36,12 @@
  * @link http://github.com/sagar1992/StringCompare
  * @version 1.0
  */
-class InvalidStringCompareTypeException extends LogicException {
 
-}
+/* Default configuration */
+$config['COMPARE_TYP'] = 'wordcount';
+
+/* Custom error handlers */
+class InvalidStringCompareTypeException extends LogicException {}
 
 interface CompareAlgo {
 
@@ -49,9 +52,9 @@ class StringCompareFactory {
 
     public static function compareWith($type) {
         if ($type == 'wordcount') {
-
+        	return new WordCountMethod();
         } else if ($type == 'charcount') {
-
+        	return new CharCountMethod();
         } else {
             throw new InvalidStringCompareTypeException("Invalid string compare type exception.");
         }
@@ -62,7 +65,7 @@ class StringCompareFactory {
 class WordCountMethod implements CompareAlgo {
 
     public function compareString($master, $slave, $percentage) {
-
+    	return 1;
     }
 
 }
@@ -76,5 +79,24 @@ class CharCountMethod implements CompareAlgo {
 }
 
 class StringCompare {
-//put your code here
+
+	private $result;
+
+	function __construct($master, $slave, $percentage) {
+		$config           = $GLOBALS['config'];
+		$comparision_type = $config['COMPARE_TYP'];
+
+		$comparator       = StringCompareFactory::compareWith($comparision_type);
+		$this->result     = $comparator->compareString($master, $slave, $percentage);
+
+	}
+
+	public function __toString(){
+		return (string) $this->result;
+	}
+
+}
+
+function StringCompare($master, $slave, $percentage){
+	return new StringCompare($master, $slave, $percentage);
 }
