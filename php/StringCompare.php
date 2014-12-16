@@ -36,12 +36,14 @@
  * @link http://github.com/sagar1992/StringCompare
  * @version 1.0
  */
-
 /* Default configuration */
 $config['COMPARE_TYP'] = 'wordcount';
 
 /* Custom error handlers */
-class InvalidStringCompareTypeException extends LogicException {}
+
+class InvalidStringCompareTypeException extends LogicException {
+
+}
 
 interface CompareAlgo {
 
@@ -52,9 +54,9 @@ class StringCompareFactory {
 
     public static function compareWith($type) {
         if ($type == 'wordcount') {
-        	return new WordCountMethod();
+            return new WordCountMethod();
         } else if ($type == 'charcount') {
-        	return new CharCountMethod();
+            return new CharCountMethod();
         } else {
             throw new InvalidStringCompareTypeException("Invalid string compare type exception.");
         }
@@ -63,82 +65,110 @@ class StringCompareFactory {
 }
 
 class WordCountMethod implements CompareAlgo {
-	private $statsArray = array();
-	private $percentage;
-	private function generateResult($array){
-		$totalCount = count($array);
-		$count      = 0;
-		foreach($array as $value):
-			if($value == 0){
-				continue;
-			}else{
-				$count++;
-			}
-		endforeach;
-		$r_percentage = ($count/$totalCount)*100;
-		if($this->percentage <= $r_percentage){
-			return 1;
-		}else{
-			return 0;
-		}
-	}
+
+    private $percentage;
+    private $statsArray = array();
+
+    private function generateResult($array) {
+        $totalCount = count($array);
+        $count = 0;
+        foreach ($array as $value):
+            if ($value == 0) {
+                continue;
+            } else {
+                $count++;
+            }
+        endforeach;
+        $r_percentage = ($count / $totalCount) * 100;
+        if ($this->percentage <= $r_percentage) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public function compareString($master, $slave, $percentage) {
-    	$this->percentage = $percentage;
-    	$words = explode(' ',$master);
-    	if(!empty($words)){
-	    	foreach($words as $word):
-	    		if(strlen($word)<=2)
-	    			continue;
-	    		$statsArray[$word] = substr_count($slave, $word);
-	    	endforeach;
-	    	return $this->generateResult($statsArray);
-	    }else{
-	    	return 0;
-	    }
+        $this->percentage = $percentage;
+        $words = explode(' ', $master);
+        if (!empty($words)) {
+            foreach ($words as $word):
+                if (strlen($word) <= 2)
+                    continue;
+                $this->statsArray[$word] = substr_count($slave, $word);
+            endforeach;
+            return $this->generateResult($this->statsArray);
+        }else {
+            return 0;
+        }
     }
 
 }
 
 class CharCountMethod implements CompareAlgo {
-	private $statsArray = array();
-	private $percentage;
+
+    private $percentage;
+    private $statsArray = array();
+
+    private function generateResult($array) {
+        print_r($array);
+        $totalCount = count($array);
+        $count = 0;
+        foreach ($array as $value):
+            if ($value < 0) {
+                continue;
+            } else {
+                $count++;
+            }
+        endforeach;
+        $r_percentage = ($count / $totalCount) * 100;
+        if ($this->percentage <= $r_percentage) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public function compareString($master, $slave, $percentage) {
         $this->percentage = $percentage;
-        $stringMArray = str_split($master);
-        $stringSArray = str_split($slave);
-        $uniqueMArray = array_unique($stringMArray);
-  		/* incomplete */
+        $masterCount = count_chars($master, 1);
+        $slaveCount = count_chars($slave, 1);
+        foreach ($masterCount as $key => $count):
+            if (array_key_exists($key, $slaveCount)) {
+                $this->statsArray[$key] = $slaveCount[$key] - $count;
+            } else {
+                $this->statsArray[$key] = '-1';
+            }
+        endforeach;
+        return $this->generateResult($this->statsArray);
     }
 
 }
 
 class StringCompare {
 
-	private $result;
-	private $percentage;
+    private $percentage;
 
-	function __construct($master, $slave, $percentage) {
-		$config           = $GLOBALS['config'];
-		$comparision_type = $config['COMPARE_TYP'];
-		$master           = $this->formatInput($master);
-		$slave            = $this->formatInput($slave);
+    function __construct($master, $slave, $percentage) {
+        $config = $GLOBALS['config'];
+        $comparision_type = $config['COMPARE_TYP'];
+        $master = $this->formatInput($master);
+        $slave = $this->formatInput($slave);
 
-		$comparator       = StringCompareFactory::compareWith($comparision_type);
-		$this->result     = $comparator->compareString($master, $slave, $percentage);
+        $comparator = StringCompareFactory::compareWith($comparision_type);
+        $this->result = $comparator->compareString($master, $slave, $percentage);
+    }
 
-	}
+    public function __toString() {
+        return (string) $this->result;
+    }
 
-	public function __toString(){
-		return (string) $this->result;
-	}
-
-	protected function formatInput($string){
-		$string = strtolower($string);
-		return $string;
-	}
+    protected function formatInput($string) {
+        $string = strtolower($string);
+        return $string;
+    }
 
 }
 
-function StringCompare($master, $slave, $percentage){
-	return new StringCompare($master, $slave, $percentage);
+function StringCompare($master, $slave, $percentage) {
+    return new StringCompare($master, $slave, $percentage);
 }
