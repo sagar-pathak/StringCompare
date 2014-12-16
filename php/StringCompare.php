@@ -100,9 +100,14 @@ class WordCountMethod implements CompareAlgo {
 }
 
 class CharCountMethod implements CompareAlgo {
-
+	private $statsArray = array();
+	private $percentage;
     public function compareString($master, $slave, $percentage) {
-        
+        $this->percentage = $percentage;
+        $stringMArray = str_split($master);
+        $stringSArray = str_split($slave);
+        $uniqueMArray = array_unique($stringMArray);
+  		/* incomplete */
     }
 
 }
