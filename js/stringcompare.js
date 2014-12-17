@@ -34,26 +34,51 @@
  * @version 1.0
  */
 (function (window, undefined) {
-    var master, slave, percentage;
     var options = {
         'COMPARE_TYP': 'wordcount'
     };
 
     var SC = function (master, slave, percentage) {
-        return new StringCompare(master, slave, percentage);
+        return new StringCompare(master, slave, percentage).result;
     };
 
     var WordCountMethod = function () {
-        this.compareString = function (master, slave, percentage) {
+        var statsArray = Array();
+        this.generateResult = function (array) {
+            var totalCount = array.length;
+            var count = 0;
+            for (var i = 0; i < totalCount; i++) {
+                if (array[i] === 0) {
+                    continue;
+                } else {
+                    count++;
+                }
+            }
+            var r_percentage = (count / totalCount) * 100;
+            return this.percentage <= r_percentage ? 1 : 0;
+        };
 
-        }
-    }
+        this.compareString = function (master, slave, percentage) {
+            var words = master.split(' ');
+            this.percentage = percentage;
+            if (words.length > 0) {
+                for (var key = 0; key < words.length; key++) {
+                    if (words[key] <= 2)
+                        continue;
+                    statsArray.push(substr_count(slave, words[key]));
+                }
+                return this.generateResult(statsArray);
+            } else {
+                return 0;
+            }
+        };
+    };
 
     var CharCountMethod = function () {
         this.compareString = function (master, slave, percentage) {
 
-        }
-    }
+        };
+    };
 
     function StringCompareFactory() {
         this.compareWith = function (type) {
@@ -72,15 +97,26 @@
     }
 
     var StringCompare = function (master, slave, percentage) {
-        this.version = '1.0';
         var comparisionType = options.COMPARE_TYP;
         var comparator = new StringCompareFactory().compareWith(comparisionType);
-        var result = comparator.compareString(master, slave, percentage);
-        return result;
+        this.result = comparator.compareString(master, slave, percentage);
+        return this.result;
     };
 
     function errorHandler(message) {
         console.log(message);
+    }
+
+    function substr_count(string, word) {
+        string = string.replace(/\s{2,}/g, ' ');
+        var words = string.split(' ');
+        var count = 0;
+        for (var i = 0; i < words.length; i++) {
+            if (words[i] === word) {
+                count++;
+            }
+        }
+        return count;
     }
 
     function mergeOptions(obj1, obj2) {
@@ -96,7 +132,7 @@
 
     SC.setoptions = function (customOptions) {
         options = mergeOptions(options, customOptions);
-    }
+    };
 
     /* Assigning SC object to global window object */
     if (!window.SC) {
