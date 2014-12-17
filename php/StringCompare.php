@@ -25,9 +25,8 @@
  */
 
 /**
- * StringCompare is a simple tool to compare two strings having more than one word
- * based on percentage given. For e.g
- * StringCompare('Hello World', 'Hello my world', 90) /* (master, slave, percentage)
+ * StringCompare is a simple tool to compare two strings based on percentage given.
+ * For e.g StringCompare('Hello World', 'Hello my world', 90) (master, slave, percentage)
  * will result to TRUE in this case, because all words of master fields are present
  * in slave field, 100 percentage available. Comparision will be performed
  * from master to slave.
@@ -45,8 +44,8 @@ class InvalidStringCompareTypeException extends LogicException {
 
 }
 
-enum comparable_type{
-	WORDCOUNT,
+enum comparable_type {
+    WORDCOUNT,
     CHARCOUNT
 }
 
