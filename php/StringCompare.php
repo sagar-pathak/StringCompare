@@ -43,6 +43,11 @@ $config['COMPARE_TYP'] = 'wordcount';
 /* Custom error handlers */
 class InvalidStringCompareTypeException extends LogicException {}
 
+enum comparable_type{
+	WORDCOUNT,
+    CHARCOUNT
+}
+
 interface CompareAlgo {
 
     public function compareString($master, $slave, $percentage);
