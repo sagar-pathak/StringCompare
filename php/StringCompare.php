@@ -36,7 +36,7 @@
  * @version 1.0
  */
 /* Default configuration */
-$config['COMPARE_TYP'] = 'wordcount';
+$config['COMPARE_TYPE'] = 'wordcount';
 
 /* Custom error handlers */
 

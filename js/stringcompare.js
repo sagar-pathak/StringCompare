@@ -35,7 +35,7 @@
  */
 (function (window, undefined) {
     var options = {
-        'COMPARE_TYP': 'wordcount'
+        'COMPARE_TYPE': 'wordcount'
     };
 
     var SC = function (master, slave, percentage) {
