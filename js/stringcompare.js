@@ -63,7 +63,7 @@
             this.percentage = percentage;
             if (words.length > 0) {
                 for (var key = 0; key < words.length; key++) {
-                    if (words[key] <= 2)
+                    if (words[key].length <= 2)
                         continue;
                     statsArray.push(substr_count(slave, words[key]));
                 }
