@@ -32,7 +32,7 @@ These are the options available. <br/>
 <b>In PHP</b><br/>
 <code>
 $option = 'charcount';
-</code>
+</code><br/>
 <code>
 $config['COMPARE_TYPE'] = $option //Comparision will be done in charcount mode <br/>
 </code>
