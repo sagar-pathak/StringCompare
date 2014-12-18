@@ -35,7 +35,7 @@ $option = 'charcount';
 $config['COMPARE_TYPE'] = $option //Comparision will be done in charcount mode <br/>
 </code>
 
-<b>In JS</b>
+<b>In JS</b><br/>
 <code>
 SC.setoptions({COMPARE_TYPE:'charcount'});
 </code>
