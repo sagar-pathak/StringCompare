@@ -25,7 +25,7 @@ Configuration
 =============
 
 To change the mode, following has to be done before applying the funtion.<br/>
-Two options available for now <br/>
+These are the options available. <br/>
 1. wordcount<br/>
 2. charcount<br/>
 
