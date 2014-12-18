@@ -75,8 +75,34 @@
     };
 
     var CharCountMethod = function () {
-        this.compareString = function (master, slave, percentage) {
+    	var statsArray = Array();
+        this.generateResult = function (array) {
+            var totalCount = 0;
+            var count = 0;
+            for (key in array) {
+            	totalCount++;
+                if (array[key] < 0) {
+                    continue;
+                } else {
+                    count++;
+                }
+            }
+            var r_percentage = (count / totalCount) * 100;
+            return this.percentage <= r_percentage ? 1 : 0;
+        };
 
+        this.compareString = function (master, slave, percentage) {
+        	this.percentage = percentage;
+        	masterCount = count_chars(master);
+        	slaveCount = count_chars(slave);
+        	for(var key in masterCount){
+        		if(slaveCount.hasOwnProperty(key)){
+        			statsArray[key] = slaveCount[key] - masterCount[key];
+        		}else{
+        			statsArray[key] = -1;
+        		}
+        	}
+        	return this.generateResult(statsArray);
         };
     };
 
@@ -99,6 +125,8 @@
     var StringCompare = function (master, slave, percentage) {
         var comparisionType = options.COMPARE_TYP;
         var comparator = new StringCompareFactory().compareWith(comparisionType);
+        master = formatInput(master);
+        slave = formatInput(slave);
         this.result = comparator.compareString(master, slave, percentage);
         return this.result;
     };
@@ -117,6 +145,29 @@
             }
         }
         return count;
+    }
+
+    function count_chars(string){
+    	var wordWithUniqueLetters = string.split("").filter(function(x, n, s) { 
+    			return s.indexOf(x) == n 
+    		}).join("");
+    	var uniqueCount = wordWithUniqueLetters.length;
+    	var duplicateCharCount = Array();
+    	var count;
+    	for(var i = 0; i < uniqueCount; i++ ) {
+    		count = 0;
+    		for(var j = 0; j < string.length; j++ ){
+    			if(wordWithUniqueLetters[i] === string[j])
+    				count++;
+    		}	
+    		duplicateCharCount[wordWithUniqueLetters[i]] = count;
+    	}
+    	return duplicateCharCount;
+    }
+
+    function formatInput(string){
+    	string = string.toLowerCase();
+    	return string;
     }
 
     function mergeOptions(obj1, obj2) {
