@@ -2,7 +2,7 @@ StringCompare
 =============
 
 StringCompare is a addon function to compare two string based on percentage matched. It has two operating mode<br/>
-1.Word count mode<br/>
+<b>1.Word count mode</b><br/>
 <p>This mode will be active by default.It will be useful to compare two sentences. <br/>
 For example:<br/>
 <code>
@@ -12,7 +12,7 @@ StringCompare('Hello World','Hello my world',90) // returns true
 StringCompare('Hello Sagar', 'Hello Ryan',90) // returns false <br/>
 </code>
 </p>
-2.Char count mode<br/>
+<b>2.Char count mode</b><br/>
 <p>
 To enable this mode configuration of the StringCompare needs to be changed. This will be useful to compare two words. <br/> 
 For example: <br/>
