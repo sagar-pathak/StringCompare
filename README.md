@@ -2,7 +2,7 @@ StringCompare
 =============
 
 StringCompare is a addon function to compare two string based on percentage matched. It has two operating mode<br/>
-<code>StringCompare(comparethisstring,tothisstring, percentage)</code>
+<code>StringCompare(compareThisString,toThisString, percentage)</code><br/>
 <b>1.Word count mode</b><br/>
 <p>This mode will be active by default.It will be useful to compare two sentences. <br/>
 For example:<br/>
